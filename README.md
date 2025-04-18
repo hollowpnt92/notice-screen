@@ -2,6 +2,8 @@
 
 A simple Flask application that displays notices to users and requires acknowledgment before redirecting to another URL. Used for maintenance notices, system updates, or important announcements.
 
+![image](https://github.com/user-attachments/assets/456ae2c7-8836-40f9-82bd-35beef6ea31d)
+
 ## Features
 
 - **Notice Display**: Show important notices to users before they access your service
