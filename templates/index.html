@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <style>
+        :root {
+            --primary: #2b2d31;
+            --secondary: #1e1f22;
+            --accent: #5865f2;
+            --text-primary: #ffffff;
+            --text-secondary: #b5bac1;
+            --border-color: #404040;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 2rem;
+            background-color: var(--secondary);
+            color: var(--text-primary);
+        }
+
+        .title {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            text-align: center;
+            font-weight: 600;
+            font-size: 2rem;
+        }
+
+        .container {
+            background-color: var(--primary);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .notice-box {
+            width: 100%;
+            min-height: 100px;
+            max-height: 300px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            background-color: var(--secondary);
+            color: var(--text-primary);
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .notice-box:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .notice-box.readonly {
+            background-color: var(--primary);
+            cursor: not-allowed;
+            resize: none;
+            color: var(--text-secondary);
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .acknowledge-btn, .save-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            width: 200px;
+        }
+
+        .acknowledge-btn:hover, .save-btn:hover {
+            background-color: #4752c4;
+            transform: translateY(-1px);
+        }
+
+        .status-btn {
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            width: 200px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .status-btn:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Switch styles */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Cookie Consent Styles */
+        .cookie-consent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--primary);
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+            display: block;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cookie-consent.show {
+            display: block;
+        }
+
+        .cookie-consent-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .cookie-consent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cookie-consent-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cookie-consent-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .cookie-consent-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .cookie-consent-details {
+            display: none;
+            background-color: var(--secondary);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .cookie-consent-details.show {
+            display: block;
+        }
+
+        .cookie-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cookie-type:last-child {
+            border-bottom: none;
+        }
+
+        .cookie-type-info {
+            flex: 1;
+        }
+
+        .cookie-type-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .cookie-type-description {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .cookie-consent-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .cookie-consent-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .cookie-consent-btn.accept-all {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .cookie-consent-btn.reject-all {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .cookie-consent-btn.save {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .cookie-consent-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .cookie-consent-content {
+                padding: 0 1rem;
+            }
+
+            .cookie-consent-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">{{ page_title }}</h1>
+    <div class="container">
+        <form method="POST" id="notice-form">
+            <textarea 
+                class="notice-box {% if is_proxy %}readonly{% endif %}" 
+                name="notice_text" 
+                {% if is_proxy %}readonly{% endif %}
+                placeholder="Enter your notice here..."
+            >{{ notice_text }}</textarea>
+            <div class="button-container">
+                {% if not is_proxy and is_local %}
+                <button type="submit" class="save-btn">Save Changes</button>
+                {% endif %}
+                <button type="button" class="acknowledge-btn" onclick="document.getElementById('acknowledge-form').submit();">Acknowledge</button>
+                {% if status_page %}
+                <a href="{{ status_page }}" class="status-btn" target="_blank">Status Page</a>
+                {% endif %}
+            </div>
+        </form>
+        <form id="acknowledge-form" method="POST" action="/acknowledge" style="display: none;"></form>
+    </div>
+
+    <!-- Cookie Consent Menu -->
+    <div class="cookie-consent" id="cookieConsent">
+        <div class="cookie-consent-content">
+            <div class="cookie-consent-header">
+                <div class="cookie-consent-title">Cookie Settings</div>
+                <div class="cookie-consent-toggle" onclick="toggleCookieDetails()">Manage Preferences</div>
+            </div>
+            <div class="cookie-consent-description">
+                We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+            </div>
+            <div class="cookie-consent-details" id="cookieDetails">
+                {% for cookie_type, info in cookie_types.items() %}
+                <div class="cookie-type">
+                    <div class="cookie-type-info">
+                        <div class="cookie-type-name">{{ info.name }}</div>
+                        <div class="cookie-type-description">{{ info.description }}</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="{{ cookie_type }}" 
+                               {% if cookie_preferences.get(cookie_type, info.default) %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="cookie-consent-buttons">
+                <button class="cookie-consent-btn reject-all" onclick="rejectAllCookies()">Reject All</button>
+                <button class="cookie-consent-btn accept-all" onclick="acceptAllCookies()">Accept All</button>
+                <button class="cookie-consent-btn save" onclick="saveCookiePreferences()">Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if cookie preferences exist
+        const cookiePreferences = JSON.parse('{{ cookie_preferences|tojson|safe }}');
+        const cookieConsent = document.getElementById('cookieConsent');
+        const cookieTypes = JSON.parse('{{ cookie_types|tojson|safe }}');
+        
+        // Show cookie consent if preferences don't exist
+        if (!cookiePreferences || Object.keys(cookiePreferences).length === 0) {
+            cookieConsent.classList.add('show');
+        }
+
+        function toggleCookieDetails() {
+            const details = document.getElementById('cookieDetails');
+            details.classList.toggle('show');
+        }
+
+        function acceptAllCookies() {
+            const preferences = {};
+            Object.keys(cookieTypes).forEach(type => {
+                preferences[type] = true;
+            });
+            savePreferences(preferences);
+        }
+
+        function rejectAllCookies() {
+            const preferences = {};
+            Object.keys(cookieTypes).forEach(type => {
+                preferences[type] = false;
+            });
+            savePreferences(preferences);
+        }
+
+        function saveCookiePreferences() {
+            const preferences = {};
+            Object.keys(cookieTypes).forEach(type => {
+                preferences[type] = document.getElementById(type).checked;
+            });
+            savePreferences(preferences);
+        }
+
+        function savePreferences(preferences) {
+            fetch('/update-cookie-preferences', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(preferences)
+            })
+            .then(response => response.json())
+            .then(data => {
+                cookieConsent.classList.remove('show');
+                // Reload the page to apply new preferences
+                window.location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html> 
