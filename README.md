@@ -1,6 +1,6 @@
 # Notice Screen
 
-A simple Flask application that displays notices to users and requires acknowledgment before redirecting to another URL. Perfect for maintenance notices, system updates, or important announcements.
+A simple Flask application that displays notices to users and requires acknowledgment before redirecting to another URL. Used for maintenance notices, system updates, or important announcements.
 
 ## Features
 
@@ -9,8 +9,6 @@ A simple Flask application that displays notices to users and requires acknowled
 - **Cookie Management**: Comprehensive cookie consent system with granular control
 - **Reverse Proxy Support**: Different UI for users accessing through a reverse proxy
 - **Status Page Integration**: Optional link to your status page
-- **Modern UI**: Clean, modern interface inspired by Overseerr
-- **Responsive Design**: Works well on both desktop and mobile devices
 
 ## Cookie Types
 
@@ -32,7 +30,7 @@ The application uses the following cookies:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/notice-screen.git
+git clone https://github.com/hollowpnt92/notice-screen.git
 cd notice-screen
 ```
 
