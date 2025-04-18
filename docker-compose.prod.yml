@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  notice-screen:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5009:5009"
+    container_name: notice-screen
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+      - REDIRECT_URL=${REDIRECT_URL}
+      - ACKNOWLEDGMENT_TIMEOUT_DAYS=${ACKNOWLEDGMENT_TIMEOUT_DAYS:-14}
+      - STATUS_PAGE=${STATUS_PAGE}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5009/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
