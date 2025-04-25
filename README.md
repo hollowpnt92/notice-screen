@@ -1,4 +1,4 @@
-# Notice Screen
+# Notice Screen Alpha
 
 A simple Flask application that displays notices to users and requires acknowledgment before redirecting to another URL. Used for maintenance notices, system updates, or important announcements.
 

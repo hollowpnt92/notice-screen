@@ -391,6 +391,7 @@
                 preferences[type] = true;
             });
             savePreferences(preferences);
+            cookieConsent.classList.remove('show');
         }
 
         function rejectAllCookies() {
@@ -399,6 +400,7 @@
                 preferences[type] = false;
             });
             savePreferences(preferences);
+            cookieConsent.classList.remove('show');
         }
 
         function saveCookiePreferences() {
@@ -407,6 +409,7 @@
                 preferences[type] = document.getElementById(type).checked;
             });
             savePreferences(preferences);
+            cookieConsent.classList.remove('show');
         }
 
         function savePreferences(preferences) {
@@ -419,7 +422,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                cookieConsent.classList.remove('show');
                 // Reload the page to apply new preferences
                 window.location.reload();
             })
